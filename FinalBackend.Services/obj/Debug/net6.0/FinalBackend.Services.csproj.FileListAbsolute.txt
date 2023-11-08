@@ -1,0 +1,12 @@
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\bin\Debug\net6.0\FinalBackend.Services.deps.json
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\bin\Debug\net6.0\FinalBackend.Services.dll
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\bin\Debug\net6.0\FinalBackend.Services.pdb
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.csproj.AssemblyReference.cache
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.AssemblyInfoInputs.cache
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.AssemblyInfo.cs
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.csproj.CoreCompileInputs.cache
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.dll
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\refint\FinalBackend.Services.dll
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\FinalBackend.Services.pdb
+C:\Users\camom\source\repos\FinalBackend\FinalBackend.Services\obj\Debug\net6.0\ref\FinalBackend.Services.dll
