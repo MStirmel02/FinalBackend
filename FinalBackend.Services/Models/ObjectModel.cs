@@ -12,6 +12,7 @@ namespace FinalBackend.Services.Models
         public string ObjectInfoID { get; set; }
         public DateTime DateSubmitted { get; set; }
 		public string UserSubmitted {  get; set; }
+		public string Image {  get; set; }
 		
     }
 }

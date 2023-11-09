@@ -41,12 +41,28 @@ namespace FinalBackend.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("@{id}")]
+        public int GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+        {
+            try
+            {
+                return _objectService.PostObject();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            
+        }
+
         [HttpPost]
-        [Route("id")]
-        public List<ObjectModel> GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+        [Route("")]
+        public List<ObjectModel> PostObjectController([FromBody][Required] FullObjectModel obj, CancellationToken ct = default)
         {
             throw new NotImplementedException();
-            
+
         }
     }
 }

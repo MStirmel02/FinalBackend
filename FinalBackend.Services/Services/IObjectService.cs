@@ -12,6 +12,9 @@ namespace FinalBackend.Services.Services
 
         public List<ObjectModel> GetObjectList();
 
+        public int PostObject();
+
+        public FullObjectModel GetObjectByID(int id);
 
     }
 }

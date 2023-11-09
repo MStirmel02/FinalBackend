@@ -14,9 +14,12 @@ namespace FinalBackend.Services
             _configuration = configuration;
         }
 
-        public async Task<int> PostObject()
+        public int PostObject()
         {
 
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_post_object", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
 
             return 0;
@@ -44,6 +47,7 @@ namespace FinalBackend.Services
                         objectModel.DateSubmitted = reader.GetDateTime(1);
                         objectModel.UserSubmitted = reader.GetString(2);
                         objectModel.ObjectInfoID = reader.GetString(3);
+                        objectModel.Image = reader.GetString(4);
                         
                         objectList.Add(objectModel);
                     }
@@ -60,6 +64,36 @@ namespace FinalBackend.Services
             return objectList;
         }
 
+        public FullObjectModel GetObjectByID(int id)
+        {
+            FullObjectModel objectModel = new FullObjectModel();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_get_objects", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        
+
+                    }
+                }
+
+
+            } 
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return objectModel; 
+
+        }
         /*
 * 
 * using (var conn = SqlConnectionProvider.GetConnection())
