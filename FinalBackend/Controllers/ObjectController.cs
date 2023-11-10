@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
-using FinalBackend.Services;
-using FinalBackend.Services.Models;
-using System.Text.Json.Nodes;
 using FinalBackend.Services.Models;
 using FinalBackend.Services.Services;
 using System.Text.Json;
@@ -13,7 +8,7 @@ namespace FinalBackend.Controllers
 {
 
     [ApiController]
-    [Route("Controller/[controller]/")]
+    [Route("[controller]/")]
     public class ObjectController : ControllerBase
     {
         private IObjectService _objectService;
@@ -42,12 +37,12 @@ namespace FinalBackend.Controllers
         }
 
         [HttpGet]
-        [Route("@{id}")]
-        public int GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+        [Route("id")]
+        public string GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
         {
             try
             {
-                return _objectService.PostObject();
+                return JsonSerializer.Serialize(_objectService.GetObjectByID(id));
             }
             catch (Exception e)
             {
@@ -59,9 +54,17 @@ namespace FinalBackend.Controllers
 
         [HttpPost]
         [Route("")]
-        public List<ObjectModel> PostObjectController([FromBody][Required] FullObjectModel obj, CancellationToken ct = default)
+        public int PostObjectController([FromBody][Required] FullObjectModel obj, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _objectService.PostObject(obj);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
 
         }
     }
