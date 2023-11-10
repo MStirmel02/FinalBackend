@@ -67,5 +67,20 @@ namespace FinalBackend.Controllers
             }
 
         }
+
+        [HttpPatch]
+        [Route("id")]
+        public int PatchObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+        {
+            try
+            {
+                return _objectService.PatchObject(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

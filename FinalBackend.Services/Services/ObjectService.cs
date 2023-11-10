@@ -181,6 +181,14 @@ namespace FinalBackend.Services
         }
 
 
+        public int PatchObject(string id)
+        {
+
+
+
+            return 0;
+        }
+
 
         /*
 * 
