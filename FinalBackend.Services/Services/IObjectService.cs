@@ -16,6 +16,6 @@ namespace FinalBackend.Services.Services
 
         public FullObjectModel GetObjectByID(string id);
 
-        public int PatchObject(string id);
+        public int PutObject(FullObjectModel obj, string editUser, string action);
     }
 }

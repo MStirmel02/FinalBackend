@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using FinalBackend.Services.Models;
 using FinalBackend.Services.Services;
 using System.Text.Json;
+using RestSharp;
 
 namespace FinalBackend.Controllers
 {
@@ -44,10 +45,9 @@ namespace FinalBackend.Controllers
             {
                 return JsonSerializer.Serialize(_objectService.GetObjectByID(id));
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                throw e;
+                return "SQLException";
             }
             
         }
@@ -60,26 +60,25 @@ namespace FinalBackend.Controllers
             {
                 return _objectService.PostObject(obj);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                throw e;
+                return 0;
             }
 
         }
 
-        [HttpPatch]
-        [Route("id")]
-        public int PatchObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+
+        [HttpPut]
+        [Route("")]
+        public int PutObjectController([FromBody][Required] FullObjectModel obj, [FromHeader][Required] string userId, [FromHeader][Required] string action, CancellationToken ct = default)
         {
             try
             {
-                return _objectService.PatchObject(id);
+                return _objectService.PutObject(obj, userId, action);
             }
             catch (Exception)
             {
-
-                throw;
+                return 0;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json;
 using FinalBackend.Services.Models;
 using FinalBackend.Services.Services;
 using Microsoft.Extensions.Configuration;
@@ -44,26 +45,6 @@ namespace FinalBackend.Services
             cmd.Parameters["@SubmitUser"].Value = obj.SubmitUser;
             cmd.Parameters["@Image"].Value = obj.Image;
 
-
-            /*
-             * {
-  "objectID": "string",
-  "objectTypeID": "string",
-  "rightAscension": "string",
-  "declination": "string",
-  "redshift": 0,
-  "apparentMagnitude": 0,
-  "absoluteMagnitude": 0,
-  "mass": "string",
-  "description": "string",
-  "dateSubmitted": "2023-11-10T01:50:24.531Z",
-  "dateAccepted": "2023-11-10T01:50:24.531Z",
-  "submitUser": "string",
-  "acceptUser": "string",
-  "image": "string"
-}
-             * 
-             */
             try
             {
                 conn.Open();
@@ -82,8 +63,120 @@ namespace FinalBackend.Services
 
                 throw;
             }
+            finally { conn.Close(); }
 
         }
+
+        public int PutObject(FullObjectModel obj, string userId, string action)
+        {
+
+            string oldObj = JsonSerializer.Serialize(GetObjectByID(obj.ObjectID));
+            string newObj = JsonSerializer.Serialize(obj);
+
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_put_object", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@ObjectID", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@ObjectTypeID", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@RightAscension", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@Declination", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@Redshift", SqlDbType.Float);
+            cmd.Parameters.Add("@ApparentMagnitude", SqlDbType.Float);
+            cmd.Parameters.Add("@AbsoluteMagnitude", SqlDbType.Float);
+            cmd.Parameters.Add("@Mass", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@Description", SqlDbType.Text);
+            cmd.Parameters.Add("@DateSubmitted", SqlDbType.DateTime);
+            cmd.Parameters.Add("@SubmitUser", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@Image", SqlDbType.NVarChar);
+
+            cmd.Parameters["@ObjectID"].Value = obj.ObjectID;
+            cmd.Parameters["@ObjectTypeID"].Value = obj.ObjectTypeID;
+            cmd.Parameters["@RightAscension"].Value = obj.RightAscension;
+            cmd.Parameters["@Declination"].Value = obj.Declination;
+            cmd.Parameters["@Redshift"].Value = obj.Redshift;
+            cmd.Parameters["@ApparentMagnitude"].Value = obj.ApparentMagnitude;
+            cmd.Parameters["@AbsoluteMagnitude"].Value = obj.AbsoluteMagnitude;
+            cmd.Parameters["@Mass"].Value = obj.Mass;
+            cmd.Parameters["@Description"].Value = obj.Description;
+            cmd.Parameters["@DateSubmitted"].Value = obj.DateSubmitted;
+            cmd.Parameters["@SubmitUser"].Value = obj.SubmitUser;
+            cmd.Parameters["@Image"].Value = obj.Image;
+
+            try
+            {
+                conn.Open();
+
+                if (cmd.ExecuteNonQuery() == 1)
+                {
+                    if (PostObjectAudit(newObj, oldObj, userId, obj.ObjectID, action) == 1)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally { conn.Close(); }
+        }
+
+        public int PostObjectAudit(string newObj, string oldObj, string userId, string objectId, string action)
+        {
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_audit_object", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ObjectID", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@Old", SqlDbType.Text);
+            cmd.Parameters.Add("@New", SqlDbType.Text);
+            cmd.Parameters.Add("@EditDate", SqlDbType.DateTime);
+            cmd.Parameters.Add("@EditUser", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@EditAction", SqlDbType.NVarChar);
+
+            cmd.Parameters["@ObjectID"].Value = objectId;
+            cmd.Parameters["@Old"].Value = oldObj;
+            cmd.Parameters["@New"].Value = newObj;
+            cmd.Parameters["@EditDate"].Value = DateTime.Now;
+            cmd.Parameters["@EditUser"].Value = userId;
+            cmd.Parameters["@EditAction"].Value = action;
+
+            try
+            {
+                conn.Open();
+
+                if (cmd.ExecuteNonQuery() == 1)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally {  conn.Close(); }
+
+
+        }
+        /*
+         * 
+         * 
+	,	[ObjectID]			[NVARCHAR](255)						NOT NULL
+	,	[Old]				[TEXT]								NOT NULL
+	,	[New]				[TEXT]								NOT NULL
+	,	[EditDate]			[DATETIME]							NOT NULL
+	,	[EditUser]			[NVARCHAR](100)						NOT NULL
+         * 
+         */
 
         public List<ObjectModel> GetObjectList()
         {
@@ -119,6 +212,7 @@ namespace FinalBackend.Services
 
                 throw;
             }
+            finally { conn.Close(); }
 
 
             return objectList;
@@ -176,53 +270,11 @@ namespace FinalBackend.Services
             {
                 throw e;
             }
+            finally { conn.Close(); }
             return objectModel; 
 
         }
 
-
-        public int PatchObject(string id)
-        {
-
-
-
-            return 0;
-        }
-
-
-        /*
-* 
-* using (var conn = SqlConnectionProvider.GetConnection())
-   {
-       var cmdText = "sp_select_roles_by_employeeID";
-       var cmd = new SqlCommand(cmdText, conn);
-       cmd.CommandType = CommandType.StoredProcedure;
-       cmd.Parameters.Add("@EmployeeID", SqlDbType.Int);
-       cmd.Parameters["@EmployeeID"].Value = employeeID;
-
-       try
-       {
-           conn.Open();
-           var reader = cmd.ExecuteReader();
-           if (reader.HasRows)
-           {
-               while (reader.Read())
-               {
-                   roles.Add(reader.GetString(0));
-               }
-           }
-       }
-       catch (Exception ex)
-       {
-           throw ex;
-       }
-   }
-
-   return roles;
-* 
-* 
-* 
-*/
 
     }
 }
