@@ -11,7 +11,7 @@ namespace FinalBackend.Services.Services
     {
         bool UserValidation(UserModel user);
 
-        bool CreateUser();
+        bool CreateUser(UserModel user);
 
 
 

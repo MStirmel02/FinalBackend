@@ -19,9 +19,32 @@ namespace FinalBackend.Services.Services
             _configuration = configuration;
         }
 
-        public bool CreateUser()
+        public bool CreateUser(UserModel user)
         {
-            throw new NotImplementedException();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_post_user", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@PasswordHash", SqlDbType.NVarChar);
+
+            cmd.Parameters["@UserID"].Value = user.UserId;
+            cmd.Parameters["@PasswordHash"].Value = user.PasswordHash;
+
+            try
+            {
+                conn.Open();
+                if (cmd.ExecuteNonQuery() == 2)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            } finally { conn.Close(); }
+
         }
 
         public bool UserValidation(UserModel user)
@@ -46,16 +69,14 @@ namespace FinalBackend.Services.Services
                 {
                     return true;
                 }
-                
+                return false;
             }
             catch (Exception)
             {
 
                 return false;
-            }
+            } finally { conn.Close(); }
 
-
-            return true;
         }
     }
 }

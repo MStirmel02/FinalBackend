@@ -31,5 +31,20 @@ namespace FinalBackend.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("User")]
+        public bool UserPostController([FromBody][Required] UserModel model)
+        {
+            try
+            {
+                return _userService.CreateUser(model);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
