@@ -76,7 +76,40 @@ namespace FinalBackend.Services.Services
 
                 return false;
             } finally { conn.Close(); }
+        }
 
+        public List<string> GetUserRoles(string userId)
+        {
+            string str = "";
+            List<string> list = new List<string>();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_get_userroles", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@UserID", SqlDbType.NVarChar);
+
+            cmd.Parameters["@UserID"].Value = userId;
+
+            try
+            {
+                conn.Open();
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(reader.GetString(0));
+                         
+                    }
+                }
+            } catch(Exception)
+            {
+
+            } finally { conn.Close(); }
+
+
+            return list;
         }
     }
 }

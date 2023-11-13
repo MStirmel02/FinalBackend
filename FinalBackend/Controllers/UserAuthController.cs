@@ -2,6 +2,7 @@
 using FinalBackend.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace FinalBackend.Controllers
 {
@@ -27,8 +28,7 @@ namespace FinalBackend.Controllers
             }
             catch (Exception)
             {
-
-                throw;
+                return false;
             }
         }
 
@@ -42,8 +42,21 @@ namespace FinalBackend.Controllers
             }
             catch (Exception)
             {
+                return false;
+            }
+        }
 
-                throw;
+        [HttpGet]
+        [Route("Roles/")]
+        public List<string> UserGetRolesController([FromQuery][Required] string userId)
+        {
+            try
+            {
+                return _userService.GetUserRoles(userId);
+            }
+            catch (Exception)
+            {
+                return new List<string>();
             }
         }
     }

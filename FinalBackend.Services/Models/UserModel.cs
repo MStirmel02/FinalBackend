@@ -11,6 +11,8 @@ namespace FinalBackend.Services.Models
         public string UserId {  get; set; }
 
         public string PasswordHash { get; set; }
+
+        public List<string> Roles { get; set; }
     }
 
 }

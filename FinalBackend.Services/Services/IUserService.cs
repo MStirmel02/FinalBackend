@@ -13,6 +13,7 @@ namespace FinalBackend.Services.Services
 
         bool CreateUser(UserModel user);
 
+        List<string> GetUserRoles(string userId);
 
 
     }
