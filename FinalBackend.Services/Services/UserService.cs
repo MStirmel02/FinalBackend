@@ -34,7 +34,7 @@ namespace FinalBackend.Services.Services
             try
             {
                 conn.Open();
-                if (cmd.ExecuteNonQuery() == 2)
+                if (cmd.ExecuteNonQuery() != 0)
                 {
                     return true;
                 }
