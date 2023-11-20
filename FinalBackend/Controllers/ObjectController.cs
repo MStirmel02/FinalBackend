@@ -21,7 +21,7 @@ namespace FinalBackend.Controllers
 
         [HttpGet]
         [Route("")]
-        public string GetObjectListController()
+        public List<ObjectModel> GetObjectListController()
         {
             try
             {
@@ -29,7 +29,7 @@ namespace FinalBackend.Controllers
 
                 string jsonString = JsonSerializer.Serialize(response);
 
-                return jsonString;
+                return response;
             }
             catch (Exception e)
             {
@@ -39,15 +39,15 @@ namespace FinalBackend.Controllers
 
         [HttpGet]
         [Route("id")]
-        public string GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
+        public FullObjectModel GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
         {
             try
             {
-                return JsonSerializer.Serialize(_objectService.GetObjectByID(id));
+                return _objectService.GetObjectByID(id);
             }
             catch (Exception)
             {
-                return "SQLException";
+                return new FullObjectModel();
             }
             
         }
