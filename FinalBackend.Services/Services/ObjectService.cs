@@ -108,7 +108,7 @@ namespace FinalBackend.Services
 
                 if (cmd.ExecuteNonQuery() == 1)
                 {
-                    if (PostObjectAudit(newObj, oldObj, userId, obj.ObjectID, action) == 1)
+                    if (PutObjectAudit(newObj, oldObj, userId, obj.ObjectID, action) == 1)
                     {
                         return 1;
                     }
@@ -128,7 +128,7 @@ namespace FinalBackend.Services
             finally { conn.Close(); }
         }
 
-        public int PostObjectAudit(string newObj, string oldObj, string userId, string objectId, string action)
+        public int PutObjectAudit(string newObj, string oldObj, string userId, string objectId, string action)
         {
             SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
             var cmd = new SqlCommand("sp_audit_object", conn);

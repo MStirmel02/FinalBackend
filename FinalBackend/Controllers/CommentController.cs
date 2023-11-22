@@ -1,4 +1,5 @@
-﻿using FinalBackend.Services.Services;
+﻿using FinalBackend.Services.Models;
+using FinalBackend.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,11 +18,60 @@ namespace FinalBackend.Controllers
 
         [HttpPost]
         [Route("")]
-        public bool PostCommentController([FromBody][Required] string placeholder )
+        public bool PostCommentController([FromBody][Required] CommentModel comment)
         {
-            return true;
+            try
+            {
+                return _commentService.CreateComment(comment);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
+        [HttpPatch]
+        [Route("")]
+        public bool PatchCommentController([FromBody][Required] CommentModel comment, [FromHeader][Required] string oldDescription)
+        {
+            try
+            {
+                return _commentService.EditComment(comment, oldDescription);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("id")]
+        public bool DeactivateCommentController([FromQuery][Required] int commentId)
+        {
+            try
+            {
+                return _commentService.DeactivateComment(commentId);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        [HttpGet]
+        [Route("")]
+        public List<CommentModel> GetCommentsByIdController([FromQuery][Required] string objectId)
+        {
+            try
+            {
+                return _commentService.GetCommentsByObjectId(objectId);
+            }
+            catch (Exception)
+            {
+                return new List<CommentModel>();
+            }
+        }
 
     }
 }
