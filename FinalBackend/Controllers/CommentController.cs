@@ -1,7 +1,10 @@
 ﻿using FinalBackend.Services.Models;
 using FinalBackend.Services.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace FinalBackend.Controllers
 {
@@ -65,7 +68,11 @@ namespace FinalBackend.Controllers
         {
             try
             {
+                string list = JsonConvert.SerializeObject(_commentService.GetCommentsByObjectId(objectId));
+                
+                
                 return _commentService.GetCommentsByObjectId(objectId);
+
             }
             catch (Exception)
             {
