@@ -15,6 +15,12 @@ namespace FinalBackend.Services.Services
 
         List<string> GetUserRoles(string userId);
 
+        List<string> GetUsers();
+
+        bool AddRoleByUser(string userId, string roleId, string editUser);
+
+        bool RemoveRoleByUser(string userId, string roleId, string editUser);
+
 
     }
 }
