@@ -21,6 +21,8 @@ namespace FinalBackend.Services.Services
 
         bool RemoveRoleByUser(string userId, string roleId, string editUser);
 
+        List<string> GetFacts();
+
 
     }
 }

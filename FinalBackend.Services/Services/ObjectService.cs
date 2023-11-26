@@ -218,6 +218,46 @@ namespace FinalBackend.Services
             return objectList;
         }
 
+        public List<ObjectModel> GetRequestList()
+        {
+            List<ObjectModel> objectList = new List<ObjectModel>();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_get_requests", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ObjectModel objectModel = new ObjectModel();
+
+                        objectModel.ObjectID = reader.GetString(0);
+                        objectModel.DateSubmitted = reader.GetDateTime(1);
+                        objectModel.UserSubmitted = reader.GetString(2);
+                        objectModel.ObjectInfoID = reader.GetString(3);
+                        objectModel.Image = reader.GetString(4);
+
+                        objectList.Add(objectModel);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally { conn.Close(); }
+
+
+            return objectList;
+        }
+
         public FullObjectModel GetObjectByID(string id)
         {
             FullObjectModel objectModel = new FullObjectModel();

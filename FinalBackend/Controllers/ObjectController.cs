@@ -38,6 +38,25 @@ namespace FinalBackend.Controllers
         }
 
         [HttpGet]
+        [Route("Requests")]
+        public List<ObjectModel> GetRequestsController()
+        {
+            try
+            {
+                List<ObjectModel> response = _objectService.GetRequestList();
+
+                string jsonString = JsonSerializer.Serialize(response);
+
+                return response;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        [HttpGet]
         [Route("id")]
         public FullObjectModel GetObjectController([FromQuery][Required] string id, CancellationToken ct = default)
         {
@@ -81,5 +100,7 @@ namespace FinalBackend.Controllers
                 return 0;
             }
         }
+
+
     }
 }

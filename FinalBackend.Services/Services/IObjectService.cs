@@ -12,6 +12,8 @@ namespace FinalBackend.Services.Services
 
         public List<ObjectModel> GetObjectList();
 
+        public List<ObjectModel> GetRequestList();
+
         public int PostObject(FullObjectModel obj);
 
         public FullObjectModel GetObjectByID(string id);

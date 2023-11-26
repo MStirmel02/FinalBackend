@@ -208,5 +208,36 @@ namespace FinalBackend.Services.Services
             }
             finally { conn.Close(); }
         }
+
+        public List<string> GetFacts()
+        {
+            List<string> list = new List<string>();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_get_facts", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(reader.GetString(0));
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return list;
+            }
+            finally { conn.Close(); }
+
+
+            return list;
+        }
     }
 }

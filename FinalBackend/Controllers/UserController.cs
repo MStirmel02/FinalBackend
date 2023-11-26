@@ -1,4 +1,5 @@
-﻿using FinalBackend.Services.Models;
+﻿using FinalBackend.Services;
+using FinalBackend.Services.Models;
 using FinalBackend.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -101,6 +102,21 @@ namespace FinalBackend.Controllers
             catch (Exception)
             {
                 return new List<string>();
+            }
+        }
+
+        [HttpGet]
+        [Route("Facts")]
+        public List<string> GetFactsController()
+        {
+            try
+            {
+                return _userService.GetFacts();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
