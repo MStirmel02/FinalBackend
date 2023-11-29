@@ -67,10 +67,7 @@ namespace FinalBackend.Controllers
         public List<CommentModel> GetCommentsByIdController([FromQuery][Required] string objectId)
         {
             try
-            {
-                string list = JsonConvert.SerializeObject(_commentService.GetCommentsByObjectId(objectId));
-                
-                
+            {   
                 return _commentService.GetCommentsByObjectId(objectId);
 
             }
