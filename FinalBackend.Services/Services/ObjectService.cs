@@ -299,8 +299,8 @@ namespace FinalBackend.Services
                         objectModel.AbsoluteMagnitude = reader.GetDouble(9);
                         objectModel.Mass = reader.GetString(10);
                         objectModel.Description = reader.GetString(11);
-
-
+                        objectModel.DateAccepted = reader.GetDateTime(12);
+                        objectModel.AcceptUser = reader.GetString(13);
                     }
                 }
 
@@ -315,6 +315,32 @@ namespace FinalBackend.Services
 
         }
 
+        public List<string> GetObjectTypes()
+        {
+            List<string> types = new List<string>();
+            SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);
+            var cmd = new SqlCommand("sp_select_objecttypes", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        types.Add(reader.GetString(0));
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return new List<string>();   
+            } finally {  conn.Close(); }
+            return types;
+
+        }
     }
 }

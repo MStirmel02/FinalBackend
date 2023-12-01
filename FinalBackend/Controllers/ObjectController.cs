@@ -87,9 +87,9 @@ namespace FinalBackend.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPatch]
         [Route("")]
-        public int PutObjectController([FromBody][Required] FullObjectModel obj, [FromHeader][Required] string userId, [FromHeader][Required] string action, CancellationToken ct = default)
+        public int PutObjectController([FromBody] FullObjectModel obj, [FromHeader][Required] string userId, [FromHeader][Required] string action, CancellationToken ct = default)
         {
             try
             {
@@ -102,5 +102,18 @@ namespace FinalBackend.Controllers
         }
 
 
+        [HttpGet]
+        [Route("ObjectTypes")]
+        public List<string> GetObjectTypesController()
+        {
+            try
+            {
+                return _objectService.GetObjectTypes();
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
     }
 }
