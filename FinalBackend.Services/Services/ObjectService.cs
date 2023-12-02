@@ -14,6 +14,16 @@ namespace FinalBackend.Services
             _configuration = configuration;
         }
 
+
+        public string GetPath()
+        {
+            string path = Directory.GetCurrentDirectory();
+            string picPath = path.Substring(0, path.Length - 12);
+            picPath += "Pics";
+            return picPath;
+        }
+
+
         public int PostObject(FullObjectModel obj)
         {
             SqlConnection conn = new SqlConnection(_configuration["ConnectionStrings:Database"]);

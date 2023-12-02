@@ -115,5 +115,20 @@ namespace FinalBackend.Controllers
                 return new List<string>();
             }
         }
+
+        [HttpGet]
+        [Route("FilePath")]
+        public string GetFilePathController()
+        {
+            try
+            {
+                return _objectService.GetPath();
+            }
+            catch (Exception)
+            {
+
+                return string.Empty;
+            }
+        }
     }
 }

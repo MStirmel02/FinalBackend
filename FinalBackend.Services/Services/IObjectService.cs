@@ -21,5 +21,7 @@ namespace FinalBackend.Services.Services
         public int PutObject(FullObjectModel obj, string editUser, string action);
 
         public List<string> GetObjectTypes();
+
+        public string GetPath();
     }
 }
