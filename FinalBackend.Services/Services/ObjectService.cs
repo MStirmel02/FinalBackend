@@ -98,6 +98,8 @@ namespace FinalBackend.Services
             cmd.Parameters.Add("@DateSubmitted", SqlDbType.DateTime);
             cmd.Parameters.Add("@SubmitUser", SqlDbType.NVarChar);
             cmd.Parameters.Add("@Image", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@AcceptUser", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@DateAccepted", SqlDbType.DateTime);
 
             cmd.Parameters["@ObjectID"].Value = obj.ObjectID;
             cmd.Parameters["@ObjectTypeID"].Value = obj.ObjectTypeID;
@@ -111,6 +113,8 @@ namespace FinalBackend.Services
             cmd.Parameters["@DateSubmitted"].Value = obj.DateSubmitted;
             cmd.Parameters["@SubmitUser"].Value = obj.SubmitUser;
             cmd.Parameters["@Image"].Value = obj.Image;
+            cmd.Parameters["@AcceptUser"].Value = obj.AcceptUser;
+            cmd.Parameters["@DateAccepted"].Value = obj.DateAccepted;
 
             try
             {
@@ -309,8 +313,16 @@ namespace FinalBackend.Services
                         objectModel.AbsoluteMagnitude = reader.GetDouble(9);
                         objectModel.Mass = reader.GetString(10);
                         objectModel.Description = reader.GetString(11);
-                        objectModel.DateAccepted = reader.GetDateTime(12);
-                        objectModel.AcceptUser = reader.GetString(13);
+                        try
+                        {
+                            objectModel.DateAccepted = reader.GetDateTime(12);
+                            objectModel.AcceptUser = reader.GetString(13);
+                        }
+                        catch (Exception)
+                        {
+                            objectModel.DateAccepted = null;
+                            objectModel.AcceptUser = null;
+                        }
                     }
                 }
 
